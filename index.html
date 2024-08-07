@@ -11,28 +11,54 @@
     />
   </head>
   <body class="bg-weather">
-    <nav class="nav">
-      <div class="container-nav"><a href="index.html">WeatherCity</a></div>
-    </nav>
-    <div>
-      <input
-        type="text"
-        id="search"
-        placeholder="Entrez ville ou code postal"
-      />
-      <span class="material-symbols-outlined"> search </span>
-    </div>
-    <div class="details-content">
-      <h1 class="weather">05°</h1>
-      <div>
-        <h2>Paris</h2>
-        <p>saturday 6 octo 19</p>
+    <section class="div-details-content">
+      <nav class="nav">
+        <div class="container-nav"><a href="index.html">WeatherCity</a></div>
+      </nav>
+      <div class="container-details-content">
+        <div class="details-content">
+          <h1 class="weather">05°</h1>
+
+          <div>
+            <h2 class="h2-city">Paris</h2>
+            <p>saturday 6 octo 19</p>
+          </div>
+
+          <div>
+            <span class="material-symbols-outlined"> rainy </span>
+            <p>Rainy</p>
+          </div>
+        </div>
       </div>
-      <div>
-        <span class="material-symbols-outlined"> rainy </span>
-        <p>Rainy</p>
+    </section>
+    <section class="div-full-details-content">
+      <div class="div-input">
+        <div class="container-input">
+          <input
+            type="text"
+            id="search"
+            placeholder="Entrez ville ou code postal"
+          />
+        </div>
+        <div class="container-search">
+          <span class="material-symbols-outlined"> search </span>
+        </div>
       </div>
-    </div>
+
+      <div class="container-top-trending">
+        <h4 class="h4-top-trending">
+          Les plus populaires
+          <span class="material-symbols-outlined"> trending_up </span>
+        </h4>
+        <ul class="trending-countries">
+          <li><a href="">Paris</a></li>
+          <li><a href="">New york</a></li>
+          <li><a href="">Lisbonne</a></li>
+          <li><a href="">Budapeste</a></li>
+        </ul>
+      </div>
+    </section>
+
     <script src="index.js"></script>
   </body>
 </html>
