@@ -1,0 +1,38 @@
+/* Géneral */
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: url('../images/pexels-pixabay-414659.jpg') no-repeat;
+    background-size: cover;
+    background-position: center center;
+    height: 100dvh;
+    width: 100%;
+}
+/* Nav  */
+.nav{
+height: 50px;
+display: flex;
+justify-content: center;
+border: 1px solid red;
+}
+.container-nav{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 90%;
+}
+.nav a {
+    color: white;
+    text-decoration: none;
+}
+
+
+.details-content{
+    display: flex;
+    gap: 30px;
+}
+.weather{
+    font-size: 55px;
+    color: white;
+}
