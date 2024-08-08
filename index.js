@@ -1,13 +1,38 @@
-// api key = 0c8b8326153eec2588a0cb95677df6f2
+// api key = bQUiDye9ApfNGmVKSKzBut2EaW6McX9W
+// let arrayCountryMain;
+import { dataIcon } from "./dataIcon.js";
+
+console.log(dataIcon);
+let mainDetails = [];
+let weatherDetails = [];
+let keyCountrie;
 async function fetchData() {
   await fetch(
-    "https://api.openweathermap.org/data/2.5/weather?q=Paris&APPID=0c8b8326153eec2588a0cb95677df6f2"
+    "http://dataservice.accuweather.com/locations/v1/cities/search?apikey=bQUiDye9ApfNGmVKSKzBut2EaW6McX9W&q=london"
   )
     .then((res) => res.json())
     .then((data) => {
-      displayData(data);
-      console.log(data);
+      //   displayData(data[0]);
+      mainDetails = data[0];
+      keyCountrie = mainDetails.Key;
+      //   keyCountrie = key;
+      console.log(mainDetails);
     });
+
+  if (mainDetails) {
+    await fetch(
+      `http://dataservice.accuweather.com/currentconditions/v1/${keyCountrie}?apikey=bQUiDye9ApfNGmVKSKzBut2EaW6McX9W`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        weatherDetails = data[0];
+        console.log(weatherDetails);
+      });
+  }
+  //   fusionne les tableau
+  //   let arrayCountryMain = [...mainDetails, ...weatherDetails];
+  //   console.log(arrayCountryMain);
+  displayData(mainDetails, weatherDetails);
 }
 
 fetchData();
@@ -24,42 +49,67 @@ inputSearch.addEventListener("input", (e) => {
   country = e.target.value;
 });
 
-function displayData(array) {
+function displayData(array, details) {
   const detailsContent = document.querySelector("#details-content");
-  //   La température de base est en kelvin il suffit de faire - 273.15 pour trouver la temperature en celsium
-  let kelvinTurnToCelsius = Math.ceil(array.main.temp - 273.15);
-  //   Ce calcul nous permet de trouver le timestamp du pays pour lequel on a fait la recherche pour pouvoir trouver la date du pays en question
-
-  let date = new Date(array.dt * 1000 + array.timezone); // Thu Aug 08 2024 01:28:28 GMT+0200 (heure d’été d’Europe centrale)
-
-  let currentDate = date.toDateString().slice(0, -5); // pour obtenir Thu Aug 08
-
+  // pour avoir une températeur en nombre entier
+  let temperatureWithoutComma = Math.ceil(details.Temperature.Metric.Value);
+  let date = details.LocalObservationDateTime.slice(0, -15);
   console.log(date);
+
+  // on recupère le iconWeather qui va correspondre a l'image de la température
+  let icon = details.WeatherIcon;
+  console.log(icon);
+  // On va pouvoir récupérer le path de notre icon
+  let patheImg = dataIcon.filter((picture) => picture.id == icon);
+  console.log(patheImg);
 
   detailsContent.innerHTML = `
       
-       <h1 class="weather">${kelvinTurnToCelsius}°</h1>
+       <h1 class="weather">${temperatureWithoutComma}°</h1>
   
             <div>
-              <h2 class="h2-city">${array.name}</h2>
-              <p>${currentDate}</p>
+              <h2 class="h2-city">${array.EnglishName}</h2>
+              <p>${date}</p>
             </div>
   
             <div>
-              <img src="http://openweathermap.org/img/w/${array.weather[0].icon}.png"   /> 
-              <p>${array.weather[0].main}</p>
+              <img src="./WeatherIcon/${patheImg[0].path}.png"   /> 
+              <p>${details.WeatherText}</p>
             </div>
       `;
 }
 
 const searchBtn = document.querySelector("#search-btn");
+let mainDetailsSearch = [];
+let weatherDetailsSearch = [];
+let keyCountrieSearch;
+
 searchBtn.addEventListener("click", async () => {
   console.log(country);
   await fetch(
-    ` https://api.openweathermap.org/data/2.5/weather?q=${country}&APPID=0c8b8326153eec2588a0cb95677df6f2`
+    ` http://dataservice.accuweather.com/locations/v1/cities/search?apikey=bQUiDye9ApfNGmVKSKzBut2EaW6McX9W&q=${country}`
   )
     .then((res) => res.json())
-    .then((data) => (arrayCountry = data));
-  console.log(arrayCountry.name);
-  displayData(arrayCountry);
+    .then((data) => {
+      //   displayData(data[0]);
+      mainDetailsSearch = data[0];
+      keyCountrieSearch = mainDetailsSearch.Key;
+      //   keyCountrie = key;
+      console.log(mainDetailsSearch);
+    });
+
+  if (mainDetailsSearch) {
+    await fetch(
+      `http://dataservice.accuweather.com/currentconditions/v1/${keyCountrieSearch}?apikey=bQUiDye9ApfNGmVKSKzBut2EaW6McX9W`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        weatherDetailsSearch = data[0];
+        console.log(weatherDetailsSearch);
+      });
+  }
+  //   fusionne les tableau
+  //   let arrayCountryMain = [...mainDetails, ...weatherDetailsSearch];
+  //   console.log(arrayCountryMain);
+  displayData(mainDetailsSearch, weatherDetailsSearch);
 });
