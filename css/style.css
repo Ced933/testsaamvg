@@ -3,16 +3,20 @@ body{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background: url('../images/pexels-pixabay-414659.jpg') no-repeat;
+    background: url('../images/pexels-adam-lukac-254247-773953.jpg') no-repeat;
     background-size: cover;
     background-position: center center;
     height: 100dvh;
     width: 100%;
-    display: flex;
+    /* display: flex; */
 }
 /* div englobant la nav et les details  */
 .div-details-content{
-    width: 70%;
+    /* width: 100%; */
+    /* border: 1px solid red; */
+    height: calc(100dvh - 50px);
+    display: flex;
+    justify-content: center;
 }
 /* Nav  */
 .nav {
@@ -38,7 +42,7 @@ justify-content: center;
     gap: 30px;
     align-items: center;
     justify-content: center;
-    width: 40%;
+    width: 90%;
     padding: 30px 0;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.27);
@@ -66,17 +70,7 @@ justify-content: center;
     margin: 0;
 }
 
-/* deuxieme section avec l'input search et les details plus minitieux  */
 
-.div-full-details-content {
-    width: 30%;
-    background: rgba(255, 255, 255, 0.27);
-    /* border-radius: 16px; */
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(2.9px);
-    -webkit-backdrop-filter: blur(4.9px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
 
 /* input  */
 .div-input {
@@ -90,7 +84,7 @@ justify-content: center;
 
 .div-input input {
     font-size: 15px;
-    width: 90%;
+    width: 100%;
     background-color: transparent;
     color: #98A3AD;
     border: none;
@@ -98,6 +92,7 @@ justify-content: center;
 
 .div-input input:focus{
    outline: none;
+   background-color: transparent;
 }
 
 .container-input {
@@ -131,15 +126,33 @@ justify-content: center;
 /* partie les plus populaire */
 
 .container-details-content {
-    width:  100%;
+    width:  50%;
     height: calc(100% - 50px);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    /* border: 1px solid red ; */
 
 }
 
-.container-top-trending {
+/* partie mood  */
+#mood{
+    /* border: 1px solid red ; */
+    width: 90%;
+}
+#mood p{
+margin: 0;
+color: red;
+
+}
+#mood a{
+    margin: 0;
+    color: red;
+    font-size: 13px;    
+    }
+
+/* .container-top-trending {
     padding: 0 20px;
 }
 
@@ -161,4 +174,4 @@ justify-content: center;
 .trending-countries a {
   text-decoration: none;
   color: #2c313b;
-}
+} */

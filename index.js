@@ -1,17 +1,24 @@
 // api key = bQUiDye9ApfNGmVKSKzBut2EaW6McX9W
-// let arrayCountryMain;
-//  postal "http://dataservice.accuweather.com/locations/v1/postalcodes/search?apikey=bQUiDye9ApfNGmVKSKzBut2EaW6McX9W&q=93300"
+//api key 2 = 1o3DRFog5CuRyEnDG50ASTRftDk39pAT
 
 import { dataIcon } from "./dataIcon.js";
+import { moodWeather } from "./mood.js";
+
+let apiKey = "1o3DRFog5CuRyEnDG50ASTRftDk39pAT";
 
 console.log(dataIcon);
+// mainDetails = la fiche du pays sans les icon et la date
 let mainDetails = [];
+// weatherDetails = données du pays plus détaillé avec icon date
 let weatherDetails = [];
+// la clef du pays pour avoir accès aux weatherdetails
+// conclusion : On a besoin de faire 2 appels une pour le pays et une autre pour avoir le details de la temperature
 let keyCountrie;
+// Fonction fetchData est la donnée qui s'affichera par default
 async function fetchData() {
   try {
     await fetch(
-      "http://dataservice.accuweather.com/locations/v1/cities/search?apikey=bQUiDye9ApfNGmVKSKzBut2EaW6McX9W&q=london"
+      `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=london`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -21,34 +28,31 @@ async function fetchData() {
         //   keyCountrie = key;
         console.log(mainDetails);
       });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.error(error);
   }
 
   if (mainDetails) {
     try {
       await fetch(
-        `http://dataservice.accuweather.com/currentconditions/v1/${keyCountrie}?apikey=bQUiDye9ApfNGmVKSKzBut2EaW6McX9W`
+        `http://dataservice.accuweather.com/currentconditions/v1/${keyCountrie}?apikey=${apiKey}`
       )
         .then((res) => res.json())
         .then((data) => {
           weatherDetails = data[0];
           console.log(weatherDetails);
         });
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.error(error);
     }
   }
-  //   fusionne les tableau
-  //   let arrayCountryMain = [...mainDetails, ...weatherDetails];
-  //   console.log(arrayCountryMain);
+
   displayData(mainDetails, weatherDetails);
 }
 
 fetchData();
 
-let country = "";
-let arrayCountry = [];
+let city = "";
 let postalCode;
 
 const inputSearch = document.querySelector("#search");
@@ -59,11 +63,11 @@ inputSearch.addEventListener("input", (e) => {
   console.log(e.target.value);
 
   let inputValue = e.target.value;
-  // on check si l'utilisateur entre des lettre
+  // grace a checkStrinf on va vérifier si l'utilisateur entre des lettre ou des chiffre pour pouvoir orienter la recherche soit sur du string pour le nom de la ville soit sur du number donc code postal
   let checkString = /^[a-zA-Z ]+$/.test(inputValue);
-  // si c'est vrai alors ça sera une recherche avec le nom de la ville
+  // si c'est vrai alors l'utilisateur tape le nom de la ville sinon il tape un code postal
   if (checkString == true) {
-    country = e.target.value;
+    city = e.target.value;
     console.log("c'est bien un string");
   } else if (checkString == false) {
     postalCode = e.target.value;
@@ -74,17 +78,19 @@ inputSearch.addEventListener("input", (e) => {
   }
 });
 
+// la fonction qui va nous afficher coté client toutes les données. array = les details de la ville, details = les données plus détaillé avec les icons
+const detailsContent = document.querySelector("#details-content");
 function displayData(array, details) {
-  const detailsContent = document.querySelector("#details-content");
   // pour avoir une températeur en nombre entier
   let temperatureWithoutComma = Math.ceil(details.Temperature.Metric.Value);
+
   let date = details.LocalObservationDateTime.slice(0, -15);
   console.log(date);
 
   // on recupère le iconWeather qui va correspondre a l'image de la température
   let icon = details.WeatherIcon;
   console.log(icon);
-  // On va pouvoir récupérer le path de notre icon
+  // On va pouvoir récupérer icon qui est un number en le faisant matcher avec l'id de notre icon dans le tableau qui est dans dataIcon.js
   let patheImg = dataIcon.filter((picture) => picture.id == icon);
   console.log(patheImg);
 
@@ -102,7 +108,12 @@ function displayData(array, details) {
               <p>${details.WeatherText}</p>
             </div>
       `;
+
+  //   Le mood à appliquer en fonction de la temperature
+  displayMood(temperatureWithoutComma);
 }
+
+// LORSQU'ON FAIT NOTRE RECHERCHE ET QUE L'ON CLIQUE SUR LA LOUPE
 
 const searchBtn = document.querySelector("#search-btn");
 let mainDetailsSearch = [];
@@ -110,55 +121,122 @@ let weatherDetailsSearch = [];
 let keyCountrieSearch;
 
 searchBtn.addEventListener("click", async () => {
-  console.log(country);
-  if (country) {
-    await fetch(
-      ` http://dataservice.accuweather.com/locations/v1/cities/search?apikey=bQUiDye9ApfNGmVKSKzBut2EaW6McX9W&q=${country}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        //   displayData(data[0]);
-        mainDetailsSearch = data[0];
-        keyCountrieSearch = mainDetailsSearch.Key;
-        //   keyCountrie = key;
-        console.log(mainDetailsSearch);
-      });
-
-    if (mainDetailsSearch) {
+  console.log(city);
+  //   L'utilisateur à tapé une ville
+  if (city) {
+    try {
       await fetch(
-        `http://dataservice.accuweather.com/currentconditions/v1/${keyCountrieSearch}?apikey=bQUiDye9ApfNGmVKSKzBut2EaW6McX9W`
+        ` http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${city}`
       )
         .then((res) => res.json())
         .then((data) => {
-          weatherDetailsSearch = data[0];
-          console.log(weatherDetailsSearch);
+          //   displayData(data[0]);
+          mainDetailsSearch = data[0];
+          keyCountrieSearch = mainDetailsSearch.Key;
+          //   keyCountrie = key;
+          console.log(mainDetailsSearch);
         });
+    } catch (error) {
+      console.error(error);
+      errorMessage(city);
+      inputSearch.value = "";
+      return false;
     }
 
+    // si on reçoit mainDetailsSearch alors on peut à present lancer le deuxieme appel
+    if (mainDetailsSearch) {
+      try {
+        await fetch(
+          `http://dataservice.accuweather.com/currentconditions/v1/${keyCountrieSearch}?apikey=${apiKey}`
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            weatherDetailsSearch = data[0];
+            console.log(weatherDetailsSearch);
+          });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    // On a bien reçu les donnés, on les affiche maintenant
     displayData(mainDetailsSearch, weatherDetailsSearch);
-  } else if (postalCode) {
-    await fetch(
-      ` http://dataservice.accuweather.com/locations/v1/postalcodes/search?apikey=bQUiDye9ApfNGmVKSKzBut2EaW6McX9W&q=${postalCode}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        //   displayData(data[0]);
-        mainDetailsSearch = data[0];
-        keyCountrieSearch = mainDetailsSearch.Key;
-        //   keyCountrie = key;
-        console.log(mainDetailsSearch);
-      });
   }
-  if (mainDetailsSearch) {
-    await fetch(
-      `http://dataservice.accuweather.com/currentconditions/v1/${keyCountrieSearch}?apikey=bQUiDye9ApfNGmVKSKzBut2EaW6McX9W`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        weatherDetailsSearch = data[0];
-        console.log(weatherDetailsSearch);
-      });
+  //   L'utilisateur à tapé un code postal
+  else if (postalCode) {
+    try {
+      await fetch(
+        ` http://dataservice.accuweather.com/locations/v1/postalcodes/search?apikey=${apiKey}&q=${postalCode}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          mainDetailsSearch = data[0];
+          keyCountrieSearch = mainDetailsSearch.Key;
+          console.log(mainDetailsSearch);
+        });
+    } catch (error) {
+      console.error(error);
+      errorMessage(city);
+      inputSearch.value = "";
+      return false;
+    }
+
+    if (mainDetailsSearch) {
+      try {
+        await fetch(
+          `http://dataservice.accuweather.com/currentconditions/v1/${keyCountrieSearch}?apikey=${apiKey}`
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            weatherDetailsSearch = data[0];
+            console.log(weatherDetailsSearch);
+          });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    // lorsqu'on a toutes les donnés on peut maintenant les afficher
+    displayData(mainDetailsSearch, weatherDetailsSearch);
+  }
+  //   reset le formulaire apres avoir l'avoir soumis
+  inputSearch.value = "";
+});
+
+const moodDiv = document.querySelector("#mood");
+// Function Mood
+function displayMood(weather) {
+  let moodFilter;
+
+  //   let degree = 15;
+  // Si le mood est supérieur a 29 alors ça sera le mood 1 dans notre tableau d'objet
+  if (weather > 29) {
+    moodFilter = moodWeather.filter((mood) => mood.id === 1);
+    console.log(moodFilter[0]);
+  } else if (weather >= 21 && weather < 29) {
+    moodFilter = moodWeather.filter((mood) => mood.id === 2);
+    console.log(moodFilter[0]);
+  } else if (weather < 21 && weather >= 10) {
+    moodFilter = moodWeather.filter((mood) => mood.id === 3);
+    console.log(moodFilter[0]);
+  } else if (weather < 10) {
+    moodFilter = moodWeather.filter((mood) => mood.id === 4);
+    console.log(moodFilter[0]);
+  } else {
+    console.log("erreur");
   }
 
-  displayData(mainDetailsSearch, weatherDetailsSearch);
-});
+  moodDiv.innerHTML = `
+      
+                  <p>${moodFilter[0].phase}</p>
+                  <a  target="_blank" href="${moodFilter[0].musique}" >Musique qui va avec 🎶</a>
+      
+          `;
+}
+
+// Message d'erreur lorsqu'on trouve pas la recherche de l'utilisateur
+function errorMessage(search) {
+  detailsContent.innerHTML = `
+    <p class='error'>🙁 Désolé nous n'avons trouvé aucun résultat pour ${search} <p>
+    `;
+
+  moodDiv.innerHTML = "";
+}
