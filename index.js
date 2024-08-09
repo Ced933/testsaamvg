@@ -122,7 +122,13 @@ let mainDetailsSearch = [];
 let weatherDetailsSearch = [];
 let keyCountrieSearch;
 
+let mainDetailsSearchCodePostal = [];
+let weatherDetailsSearchCodePostal = [];
+let keyCountrieSearchCodePostal;
+
 searchBtn.addEventListener("click", async () => {
+  detailsContent.innerHTML = "";
+
   console.log(city);
   //   L'utilisateur à tapé une ville
   if (city) {
@@ -132,7 +138,6 @@ searchBtn.addEventListener("click", async () => {
       )
         .then((res) => res.json())
         .then((data) => {
-          //   displayData(data[0]);
           mainDetailsSearch = data[0];
           keyCountrieSearch = mainDetailsSearch.Key;
           //   keyCountrie = key;
@@ -166,18 +171,21 @@ searchBtn.addEventListener("click", async () => {
     }
     // On a bien reçu les donnés, on les affiche maintenant
     displayData(mainDetailsSearch, weatherDetailsSearch);
+    //   reset le formulaire apres avoir l'avoir soumis
+    inputSearch.value = "";
   }
   //   L'utilisateur à tapé un code postal
   else if (postalCode) {
+    console.log(postalCode);
     try {
       await fetch(
         ` http://dataservice.accuweather.com/locations/v1/postalcodes/search?apikey=${apiKey}&q=${postalCode}`
       )
         .then((res) => res.json())
         .then((data) => {
-          mainDetailsSearch = data[0];
-          keyCountrieSearch = mainDetailsSearch.Key;
-          console.log(mainDetailsSearch);
+          mainDetailsSearchCodePostal = data[0];
+          keyCountrieSearchCodePostal = mainDetailsSearchCodePostal.Key;
+          console.log(mainDetailsSearchCodePostal);
         });
     } catch (error) {
       console.error(error);
@@ -186,25 +194,25 @@ searchBtn.addEventListener("click", async () => {
       return false;
     }
 
-    if (mainDetailsSearch) {
+    if (mainDetailsSearchCodePostal) {
       try {
         await fetch(
-          `http://dataservice.accuweather.com/currentconditions/v1/${keyCountrieSearch}?apikey=${apiKey}`
+          `http://dataservice.accuweather.com/currentconditions/v1/${keyCountrieSearchCodePostal}?apikey=${apiKey}`
         )
           .then((res) => res.json())
           .then((data) => {
-            weatherDetailsSearch = data[0];
-            console.log(weatherDetailsSearch);
+            weatherDetailsSearchCodePostal = data[0];
+            console.log(weatherDetailsSearchCodePostal);
           });
       } catch (error) {
         console.error(error);
       }
     }
     // lorsqu'on a toutes les donnés on peut maintenant les afficher
-    displayData(mainDetailsSearch, weatherDetailsSearch);
+    displayData(mainDetailsSearchCodePostal, weatherDetailsSearchCodePostal);
+    //   reset le formulaire apres avoir l'avoir soumis
+    inputSearch.value = "";
   }
-  //   reset le formulaire apres avoir l'avoir soumis
-  inputSearch.value = "";
 });
 
 const moodDiv = document.querySelector("#mood");
@@ -251,73 +259,73 @@ const bodyhtml = document.querySelector("#body");
 
 function changeBackground(typeOfWeather) {
   const arraySun = [
-    "Sunny",
-    "Mostly sunny",
-    "Partly Sunny",
-    "Intermittent Clouds",
-    "Hazy Sunshine",
-    "Mostly Cloudy",
-    "Hot",
+    "sunny",
+    "mostly sunny",
+    "partly sunny",
+    "intermittent clouds",
+    "hazy sunshine",
+    "mostly cloudy",
+    "hot",
   ];
 
-  let arrayCloudy = ["Cloudy", "Dreary (Overcast)", "Fog", "Windy"];
+  let arrayCloudy = ["cloudy", "dreary (overcast)", "fog", "windy"];
 
   let arrayRain = [
-    "Showers",
-    "Mostly Cloudy w/ Showers",
-    "Partly Sunny w/ Showers",
-    "T-Storms",
-    "Mostly Cloudy w/ T-Storms",
-    "Partly Sunny w/ T-Storms",
-    "Rain",
-    "Sleet",
-    "Freezing Rain",
-    "Rain and Snow",
+    "showers",
+    "mostly cloudy w/ showers",
+    "partly sunny w/ showers",
+    "t-storms",
+    "mostly cloudy w/ t-Storms",
+    "partly sunny w/ t-Storms",
+    "rain",
+    "sleet",
+    "freezing rain",
+    "rain and snow",
   ];
 
   let arraySnow = [
-    "Flurries",
-    "Mostly Cloudy w/ Flurries",
-    "Partly Sunny w/ Flurries",
-    "Snow ",
-    "Mostly Cloudy w/ Snow",
-    "Ice",
-    "Cold ",
+    "flurries",
+    "mostly cloudy w/ flurries",
+    "partly sunny w/ flurries",
+    "snow ",
+    "mostly cloudy w/ snow",
+    "ice",
+    "cold ",
   ];
   let night = [
-    "Clear",
-    "Mostly Clear",
-    "Partly Cloudy",
-    "Intermittent Clouds",
-    "Hazy Moonlight",
-    "Mostly Cloudy",
-    "Partly Cloudy w/ Showers",
-    "Mostly Cloudy w/ Showers",
-    "Partly Cloudy w/ T-Storms",
-    "Mostly Cloudy w/ T-Storms",
-    " Mostly Cloudy w/ Flurries",
-    "Mostly Cloudy w/ Snow",
+    "clear",
+    "mostly Clear",
+    "partly Cloudy",
+    "intermittent Clouds",
+    "hazy Moonlight",
+    "mostly cloudy",
+    "partly cloudy w/ showers",
+    "mostly cloudy w/ showers",
+    "partly cloudy w/ t-Storms",
+    "mostly cloudy w/ t-Storms",
+    "mostly cloudy w/ flurries",
+    "mostly cloudy w/ snow",
   ];
 
   console.log(arraySun.includes(typeOfWeather));
 
-  if (arraySun.includes(typeOfWeather)) {
+  if (arraySun.includes(typeOfWeather.toLowerCase())) {
     bodyhtml.style.background =
       "url('./images/pexels-khanh-le-207985-666839.jpg') no-repeat";
     bodyhtml.style.backgroundSize = "cover";
-  } else if (arrayCloudy.includes(typeOfWeather)) {
+  } else if (arrayCloudy.includes(typeOfWeather.toLowerCase())) {
     bodyhtml.style.background =
       "url('./images/pexels-pixabay-414659.jpg') no-repeat";
     bodyhtml.style.backgroundSize = "cover";
-  } else if (arrayRain.includes(typeOfWeather)) {
+  } else if (arrayRain.includes(typeOfWeather.toLowerCase())) {
     bodyhtml.style.background =
       "url('./images/pexels-chriskane-166360.jpg') no-repeat";
     bodyhtml.style.backgroundSize = "cover";
-  } else if (arraySnow.includes(typeOfWeather)) {
+  } else if (arraySnow.includes(typeOfWeather.toLowerCase())) {
     bodyhtml.style.background =
       "url('./images/pexels-adam-lukac-254247-773953.jpg') no-repeat";
     bodyhtml.style.backgroundSize = "cover";
-  } else if (night.includes(typeOfWeather)) {
+  } else if (night.includes(typeOfWeather.toLowerCase())) {
     bodyhtml.style.background =
       "url('./images/pexels-dan-hadley-360599-6017481.jpg') no-repeat";
     bodyhtml.style.backgroundSize = "cover";

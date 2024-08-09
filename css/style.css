@@ -3,7 +3,6 @@ body{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* background: url('../images/pexels-adam-lukac-254247-773953.jpg') no-repeat; */
    
     background-position: center center;
     height: 100dvh;
@@ -12,8 +11,7 @@ body{
 }
 /* div englobant la nav et les details  */
 .div-details-content{
-    /* width: 100%; */
-    /* border: 1px solid red; */
+
     height: calc(100dvh - 50px);
     display: flex;
     justify-content: center;
