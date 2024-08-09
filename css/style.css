@@ -3,8 +3,8 @@ body{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background: url('../images/pexels-adam-lukac-254247-773953.jpg') no-repeat;
-    background-size: cover;
+    /* background: url('../images/pexels-adam-lukac-254247-773953.jpg') no-repeat; */
+   
     background-position: center center;
     height: 100dvh;
     width: 100%;

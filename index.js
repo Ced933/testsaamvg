@@ -111,6 +111,8 @@ function displayData(array, details) {
 
   //   Le mood à appliquer en fonction de la temperature
   displayMood(temperatureWithoutComma);
+  changeBackground(details.WeatherText);
+  console.log(details.WeatherText);
 }
 
 // LORSQU'ON FAIT NOTRE RECHERCHE ET QUE L'ON CLIQUE SUR LA LOUPE
@@ -137,9 +139,13 @@ searchBtn.addEventListener("click", async () => {
           console.log(mainDetailsSearch);
         });
     } catch (error) {
+      // on envoie une erreur dans la console
       console.error(error);
+      //   on récupère ce qu'a tapé l'utilisateur en affichant un message d'erreur accompagné de ce qu'il à tapé
       errorMessage(city);
+      //   on vide l'input
       inputSearch.value = "";
+      //   on bloque l'action de passer a l'etape suivante
       return false;
     }
 
@@ -239,4 +245,81 @@ function errorMessage(search) {
     `;
 
   moodDiv.innerHTML = "";
+}
+
+const bodyhtml = document.querySelector("#body");
+
+function changeBackground(typeOfWeather) {
+  const arraySun = [
+    "Sunny",
+    "Mostly sunny",
+    "Partly Sunny",
+    "Intermittent Clouds",
+    "Hazy Sunshine",
+    "Mostly Cloudy",
+    "Hot",
+  ];
+
+  let arrayCloudy = ["Cloudy", "Dreary (Overcast)", "Fog", "Windy"];
+
+  let arrayRain = [
+    "Showers",
+    "Mostly Cloudy w/ Showers",
+    "Partly Sunny w/ Showers",
+    "T-Storms",
+    "Mostly Cloudy w/ T-Storms",
+    "Partly Sunny w/ T-Storms",
+    "Rain",
+    "Sleet",
+    "Freezing Rain",
+    "Rain and Snow",
+  ];
+
+  let arraySnow = [
+    "Flurries",
+    "Mostly Cloudy w/ Flurries",
+    "Partly Sunny w/ Flurries",
+    "Snow ",
+    "Mostly Cloudy w/ Snow",
+    "Ice",
+    "Cold ",
+  ];
+  let night = [
+    "Clear",
+    "Mostly Clear",
+    "Partly Cloudy",
+    "Intermittent Clouds",
+    "Hazy Moonlight",
+    "Mostly Cloudy",
+    "Partly Cloudy w/ Showers",
+    "Mostly Cloudy w/ Showers",
+    "Partly Cloudy w/ T-Storms",
+    "Mostly Cloudy w/ T-Storms",
+    " Mostly Cloudy w/ Flurries",
+    "Mostly Cloudy w/ Snow",
+  ];
+
+  console.log(arraySun.includes(typeOfWeather));
+
+  if (arraySun.includes(typeOfWeather)) {
+    bodyhtml.style.background =
+      "url('./images/pexels-khanh-le-207985-666839.jpg') no-repeat";
+    bodyhtml.style.backgroundSize = "cover";
+  } else if (arrayCloudy.includes(typeOfWeather)) {
+    bodyhtml.style.background =
+      "url('./images/pexels-pixabay-414659.jpg') no-repeat";
+    bodyhtml.style.backgroundSize = "cover";
+  } else if (arrayRain.includes(typeOfWeather)) {
+    bodyhtml.style.background =
+      "url('./images/pexels-chriskane-166360.jpg') no-repeat";
+    bodyhtml.style.backgroundSize = "cover";
+  } else if (arraySnow.includes(typeOfWeather)) {
+    bodyhtml.style.background =
+      "url('./images/pexels-adam-lukac-254247-773953.jpg') no-repeat";
+    bodyhtml.style.backgroundSize = "cover";
+  } else if (night.includes(typeOfWeather)) {
+    bodyhtml.style.background =
+      "url('./images/pexels-dan-hadley-360599-6017481.jpg') no-repeat";
+    bodyhtml.style.backgroundSize = "cover";
+  }
 }
