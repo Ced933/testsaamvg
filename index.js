@@ -4,7 +4,7 @@
 import { dataIcon } from "./dataIcon.js";
 import { moodWeather } from "./mood.js";
 
-let apiKey = "1o3DRFog5CuRyEnDG50ASTRftDk39pAT";
+let apiKey = "bQUiDye9ApfNGmVKSKzBut2EaW6McX9W";
 
 console.log(dataIcon);
 // mainDetails = la fiche du pays sans les icon et la date
@@ -52,8 +52,8 @@ async function fetchData() {
 
 fetchData();
 
-let city = "";
-let postalCode;
+let city;
+// let postalCode;
 
 const inputSearch = document.querySelector("#search");
 console.log(inputSearch);
@@ -69,12 +69,9 @@ inputSearch.addEventListener("input", (e) => {
   if (checkString == true) {
     city = e.target.value;
     console.log("c'est bien un string");
-  } else if (checkString == false) {
-    postalCode = e.target.value;
-    console.log("c'est bien un number");
   } else {
-    console.log("il y a une erreur");
-    return false;
+    city = e.target.value;
+    console.log("c'est bien un number");
   }
 });
 
@@ -131,7 +128,7 @@ searchBtn.addEventListener("click", async () => {
 
   console.log(city);
   //   L'utilisateur à tapé une ville
-  if (city) {
+  if (typeof city === "string") {
     try {
       await fetch(
         ` http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${city}`
@@ -175,7 +172,7 @@ searchBtn.addEventListener("click", async () => {
     inputSearch.value = "";
   }
   //   L'utilisateur à tapé un code postal
-  else if (postalCode) {
+  else if (typeof city === "number") {
     console.log(postalCode);
     try {
       await fetch(
