@@ -18,7 +18,7 @@ let keyCountrie;
 async function fetchData() {
   try {
     await fetch(
-      `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=london`
+      `https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=london`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -35,7 +35,7 @@ async function fetchData() {
   if (mainDetails) {
     try {
       await fetch(
-        `http://dataservice.accuweather.com/currentconditions/v1/${keyCountrie}?apikey=${apiKey}`
+        `https://dataservice.accuweather.com/currentconditions/v1/${keyCountrie}?apikey=${apiKey}`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -131,7 +131,7 @@ searchBtn.addEventListener("click", async () => {
   if (typeof city === "string") {
     try {
       await fetch(
-        ` http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${city}`
+        ` https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${city}`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -155,7 +155,7 @@ searchBtn.addEventListener("click", async () => {
     if (mainDetailsSearch) {
       try {
         await fetch(
-          `http://dataservice.accuweather.com/currentconditions/v1/${keyCountrieSearch}?apikey=${apiKey}`
+          `https://dataservice.accuweather.com/currentconditions/v1/${keyCountrieSearch}?apikey=${apiKey}`
         )
           .then((res) => res.json())
           .then((data) => {
@@ -176,7 +176,7 @@ searchBtn.addEventListener("click", async () => {
     console.log(postalCode);
     try {
       await fetch(
-        ` http://dataservice.accuweather.com/locations/v1/postalcodes/search?apikey=${apiKey}&q=${postalCode}`
+        ` https://dataservice.accuweather.com/locations/v1/postalcodes/search?apikey=${apiKey}&q=${postalCode}`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -194,7 +194,7 @@ searchBtn.addEventListener("click", async () => {
     if (mainDetailsSearchCodePostal) {
       try {
         await fetch(
-          `http://dataservice.accuweather.com/currentconditions/v1/${keyCountrieSearchCodePostal}?apikey=${apiKey}`
+          `https://dataservice.accuweather.com/currentconditions/v1/${keyCountrieSearchCodePostal}?apikey=${apiKey}`
         )
           .then((res) => res.json())
           .then((data) => {
