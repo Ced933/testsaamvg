@@ -3,7 +3,10 @@ body{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-   
+
+    /* background: url('../images/pexels-dan-hadley-360599-6017481.jpg') no-repeat;
+    background-size: cover; */
+    
     background-position: center center;
     height: 100dvh;
     width: 100%;
@@ -11,7 +14,8 @@ body{
 }
 /* div englobant la nav et les details  */
 .div-details-content{
-
+    /* width: 100%; */
+    /* border: 1px solid red; */
     height: calc(100dvh - 50px);
     display: flex;
     justify-content: center;
@@ -49,6 +53,9 @@ justify-content: center;
     backdrop-filter: blur(2.9px);
     -webkit-backdrop-filter: blur(4.9px);
     border: 1px solid rgba(255, 255, 255, 0.3);
+    @media (max-width: 768px) {
+        flex-direction: column;
+     }
 }
 
 .weather {
@@ -66,6 +73,7 @@ justify-content: center;
 
 .details-content p {
     margin: 0;
+    text-align: center;
 }
 
 
@@ -130,7 +138,9 @@ justify-content: center;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* border: 1px solid red ; */
+    @media (max-width: 425px) {
+        width: 100%;
+     }
 
 }
 
