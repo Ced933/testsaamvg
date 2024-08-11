@@ -14,9 +14,9 @@ let mainDetails = [];
 // weatherDetails = données du pays plus détaillé avec icon date
 let weatherDetails = [];
 // la clef du pays pour avoir accès aux weatherdetails
-// conclusion : On a besoin de faire 2 appels une pour le pays et une autre pour avoir le details de la temperature
+// conclusion : On a besoin de faire 2 appels, un pour le pays et un autre pour avoir le details de la temperature
 let keyCountrie;
-// Fonction fetchData est la donnée qui s'affichera par default
+
 async function fetchData() {
   try {
     await fetch(
@@ -41,7 +41,7 @@ async function fetchData() {
       )
         .then((res) => res.json())
         .then((data) => {
-          // on recupère les autre details comme les icons etc
+          // on recupère les autres details comme les icons etc
           weatherDetails = data[0];
           //   console.log(weatherDetails);
         });
@@ -210,7 +210,7 @@ const moodDiv = document.querySelector("#mood");
 // Function displayMood = en fonction de la temperature une humeur apparaîtra avec un lien youtube d'une musique
 function displayMood(weather) {
   let moodFilter;
-  // Si le mood est supérieur a 29 alors ça sera le mood 1 dans notre tableau d'objet ainsi de suite
+  // Si la température est supérieur à 29 alors ça sera le mood 1 dans notre tableau d'objet ainsi de suite
   if (weather > 29) {
     moodFilter = moodWeather.filter((mood) => mood.id === 1);
     console.log(moodFilter[0]);
