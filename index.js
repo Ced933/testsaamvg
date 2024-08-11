@@ -4,7 +4,7 @@
 import { dataIcon } from "./dataIcon.js";
 import { moodWeather } from "./mood.js";
 
-let apiKey = "bQUiDye9ApfNGmVKSKzBut2EaW6McX9W";
+let apiKey = "1o3DRFog5CuRyEnDG50ASTRftDk39pAT";
 // ------------------------
 // ************ AFFICHAGE DES DONNÉES DE BASE LORSQU'ON ARRIVE SUR L'APPLICATION ************
 // ------------------------
