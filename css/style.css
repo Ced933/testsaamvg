@@ -3,23 +3,17 @@ body{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
-    /* background: url('../images/pexels-dan-hadley-360599-6017481.jpg') no-repeat;
-    background-size: cover; */
-    
     background-position: center center;
     height: 100dvh;
     width: 100%;
-    /* display: flex; */
 }
-/* div englobant la nav et les details  */
+
 .div-details-content{
-    /* width: 100%; */
-    /* border: 1px solid red; */
     height: calc(100dvh - 50px);
     display: flex;
     justify-content: center;
 }
+
 /* Nav  */
 .nav {
 height: 50px;
@@ -109,6 +103,9 @@ justify-content: center;
     align-items: center;
     padding-left: 10px;
     border-radius: 10px 0 0  10px ;
+    @media (max-width: 768px) {
+        width: 80%;
+     }
 }
 
 .div-input input::placeholder {
@@ -124,12 +121,13 @@ justify-content: center;
     align-items: center;
     justify-content: center;
     border-radius:0 10px  10px 0;
+    @media (max-width: 768px) {
+        width: 20%;
+     }
 }
 .container-search span {
     font-size: 20px;
 }
-
-/* partie les plus populaire */
 
 .container-details-content {
     width:  50%;
@@ -145,8 +143,8 @@ justify-content: center;
 }
 
 /* partie mood  */
+
 #mood{
-    /* border: 1px solid red ; */
     width: 90%;
 }
 #mood p{
@@ -159,27 +157,9 @@ color: red;
     color: red;
     font-size: 13px;    
     }
-
-/* .container-top-trending {
-    padding: 0 20px;
+.error{
+    width: 80%;
+    margin: 0 auto;
+    color: red;
+    font-size: 13px;
 }
-
-.h4-top-trending {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.trending-countries {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.trending-countries a {
-  text-decoration: none;
-  color: #2c313b;
-} */

@@ -3,18 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>WeatherCity App</title>
     <link rel="stylesheet" href="css/style.css" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
     />
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon" />
   </head>
   <body id="body" class="bg-weather">
     <nav class="nav">
       <div class="container-nav"><a href="index.html">WeatherCity</a></div>
     </nav>
-
     <section class="div-details-content">
       <div class="container-details-content">
         <div class="div-input">
@@ -32,23 +32,14 @@
           </div>
         </div>
         <div id="details-content" class="details-content">
-          <!-- <h1 class="weather">50°</h1>
-
-          <div>
-            <h2 class="h2-city">london</h2>
-            <p>12-44-454</p>
-          </div>
-
-          <div>
-            <img src="./WeatherIcon/12-s.png" />
-            <p>cloudy</p>
-          </div> -->
+          <!-- Là où va apparaître le contenu -->
         </div>
-        <div id="mood"></div>
+        <div id="mood">
+          <!-- L'humeur selon la température  -->
+        </div>
       </div>
     </section>
-
-    <script src="index.js" type="module"></script>
-    <!-- <script src="test.js" type="module"></script> -->
+    <!-- type module pour pouvoir importer nos tableaux dans index.js  -->
+    <!-- <script src="index.js" type="module"></script> -->
   </body>
 </html>

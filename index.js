@@ -5,8 +5,10 @@ import { dataIcon } from "./dataIcon.js";
 import { moodWeather } from "./mood.js";
 
 let apiKey = "bQUiDye9ApfNGmVKSKzBut2EaW6McX9W";
+// ------------------------
+// ************ AFFICHAGE DES DONNÉES DE BASE LORSQU'ON ARRIVE SUR L'APPLICATION ************
+// ------------------------
 
-console.log(dataIcon);
 // mainDetails = la fiche du pays sans les icon et la date
 let mainDetails = [];
 // weatherDetails = données du pays plus détaillé avec icon date
@@ -22,15 +24,15 @@ async function fetchData() {
     )
       .then((res) => res.json())
       .then((data) => {
-        //   displayData(data[0]);
+        // On récupère le premier résultat et on l'affecte à maindetails
         mainDetails = data[0];
+        // On récupère la clef pour avoir accès aux autres données
         keyCountrie = mainDetails.Key;
-        //   keyCountrie = key;
-        console.log(mainDetails);
       });
   } catch (error) {
     console.error(error);
   }
+  // si on reçoit mainDetails alors on peut à present lancer le deuxieme appel
 
   if (mainDetails) {
     try {
@@ -39,44 +41,38 @@ async function fetchData() {
       )
         .then((res) => res.json())
         .then((data) => {
+          // on recupère les autre details comme les icons etc
           weatherDetails = data[0];
-          console.log(weatherDetails);
+          //   console.log(weatherDetails);
         });
     } catch (error) {
       console.error(error);
     }
   }
-
+  //   Notre fonction affichage avec les données qu'on vient de récupérer
   displayData(mainDetails, weatherDetails);
 }
+// La fonction fetchData s'exécutera une fois la page chargé
+window.addEventListener("load", fetchData());
 
-fetchData();
-
-let city;
-// let postalCode;
+// ------------------------
+// ************ AFFICHAGE DES DONNÉES LORSQU'ON FAIT UNE RECHERCHE ************
+// ------------------------
+// --------
+let inputValue;
 
 const inputSearch = document.querySelector("#search");
 console.log(inputSearch);
 
 // On recupère ce qu'on tape dans l'input
 inputSearch.addEventListener("input", (e) => {
-  console.log(e.target.value);
-
-  let inputValue = e.target.value;
-  // grace a checkStrinf on va vérifier si l'utilisateur entre des lettre ou des chiffre pour pouvoir orienter la recherche soit sur du string pour le nom de la ville soit sur du number donc code postal
-  let checkString = /^[a-zA-Z ]+$/.test(inputValue);
-  // si c'est vrai alors l'utilisateur tape le nom de la ville sinon il tape un code postal
-  if (checkString == true) {
-    city = e.target.value;
-    console.log("c'est bien un string");
-  } else {
-    city = e.target.value;
-    console.log("c'est bien un number");
-  }
+  //   console.log(e.target.value);
+  inputValue = e.target.value;
 });
 
-// la fonction qui va nous afficher coté client toutes les données. array = les details de la ville, details = les données plus détaillé avec les icons
 const detailsContent = document.querySelector("#details-content");
+// La fonction display va nous afficher coté client toutes les données.
+// Paramètre array = les details de la ville, details = les données plus détaillé avec les icons
 function displayData(array, details) {
   // pour avoir une températeur en nombre entier
   let temperatureWithoutComma = Math.ceil(details.Temperature.Metric.Value);
@@ -84,12 +80,10 @@ function displayData(array, details) {
   let date = details.LocalObservationDateTime.slice(0, -15);
   console.log(date);
 
-  // on recupère le iconWeather qui va correspondre a l'image de la température
+  // on recupère le iconWeather qui va correspondre à l'image de la température
   let icon = details.WeatherIcon;
-  console.log(icon);
   // On va pouvoir récupérer icon qui est un number en le faisant matcher avec l'id de notre icon dans le tableau qui est dans dataIcon.js
   let patheImg = dataIcon.filter((picture) => picture.id == icon);
-  console.log(patheImg);
 
   detailsContent.innerHTML = `
       
@@ -106,19 +100,23 @@ function displayData(array, details) {
             </div>
       `;
 
-  //   Le mood à appliquer en fonction de la temperature
+  //   L'humeur à appliquer en fonction de la temperature
   displayMood(temperatureWithoutComma);
+  //   Changement d'arriere plan en fonction de la temperature
   changeBackground(details.WeatherText);
-  console.log(details.WeatherText);
 }
 
 // LORSQU'ON FAIT NOTRE RECHERCHE ET QUE L'ON CLIQUE SUR LA LOUPE
 
 const searchBtn = document.querySelector("#search-btn");
+// Même procédé que pour les données qui sont affichés de base
+
+// pour la version string
 let mainDetailsSearch = [];
 let weatherDetailsSearch = [];
 let keyCountrieSearch;
 
+// pour la version number
 let mainDetailsSearchCodePostal = [];
 let weatherDetailsSearchCodePostal = [];
 let keyCountrieSearchCodePostal;
@@ -126,32 +124,29 @@ let keyCountrieSearchCodePostal;
 searchBtn.addEventListener("click", async () => {
   detailsContent.innerHTML = "";
 
-  console.log(city);
+  console.log(inputValue);
   //   L'utilisateur à tapé une ville
-  if (typeof city === "string") {
+  if (typeof inputValue === "string") {
     try {
       await fetch(
-        ` https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${city}`
+        ` https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${inputValue}`
       )
         .then((res) => res.json())
         .then((data) => {
           mainDetailsSearch = data[0];
           keyCountrieSearch = mainDetailsSearch.Key;
-          //   keyCountrie = key;
-          console.log(mainDetailsSearch);
         });
     } catch (error) {
       // on envoie une erreur dans la console
       console.error(error);
       //   on récupère ce qu'a tapé l'utilisateur en affichant un message d'erreur accompagné de ce qu'il à tapé
-      errorMessage(city);
+      errorMessage(inputValue);
       //   on vide l'input
       inputSearch.value = "";
-      //   on bloque l'action de passer a l'etape suivante
+      //   on bloque l'action de passer à l'etape suivante
       return false;
     }
 
-    // si on reçoit mainDetailsSearch alors on peut à present lancer le deuxieme appel
     if (mainDetailsSearch) {
       try {
         await fetch(
@@ -172,7 +167,7 @@ searchBtn.addEventListener("click", async () => {
     inputSearch.value = "";
   }
   //   L'utilisateur à tapé un code postal
-  else if (typeof city === "number") {
+  else if (typeof inputValue === "number") {
     console.log(postalCode);
     try {
       await fetch(
@@ -186,7 +181,7 @@ searchBtn.addEventListener("click", async () => {
         });
     } catch (error) {
       console.error(error);
-      errorMessage(city);
+      errorMessage(inputValue);
       inputSearch.value = "";
       return false;
     }
@@ -205,7 +200,6 @@ searchBtn.addEventListener("click", async () => {
         console.error(error);
       }
     }
-    // lorsqu'on a toutes les donnés on peut maintenant les afficher
     displayData(mainDetailsSearchCodePostal, weatherDetailsSearchCodePostal);
     //   reset le formulaire apres avoir l'avoir soumis
     inputSearch.value = "";
@@ -213,12 +207,10 @@ searchBtn.addEventListener("click", async () => {
 });
 
 const moodDiv = document.querySelector("#mood");
-// Function Mood
+// Function displayMood = en fonction de la temperature une humeur apparaîtra avec un lien youtube d'une musique
 function displayMood(weather) {
   let moodFilter;
-
-  //   let degree = 15;
-  // Si le mood est supérieur a 29 alors ça sera le mood 1 dans notre tableau d'objet
+  // Si le mood est supérieur a 29 alors ça sera le mood 1 dans notre tableau d'objet ainsi de suite
   if (weather > 29) {
     moodFilter = moodWeather.filter((mood) => mood.id === 1);
     console.log(moodFilter[0]);
@@ -239,7 +231,6 @@ function displayMood(weather) {
       
                   <p>${moodFilter[0].phase}</p>
                   <a  target="_blank" href="${moodFilter[0].musique}" >Musique qui va avec 🎶</a>
-      
           `;
 }
 
@@ -253,7 +244,7 @@ function errorMessage(search) {
 }
 
 const bodyhtml = document.querySelector("#body");
-
+// Fonction changeBackground = Le background s'adaptera en fonction de la description du temps
 function changeBackground(typeOfWeather) {
   const arraySun = [
     "sunny",
@@ -261,11 +252,16 @@ function changeBackground(typeOfWeather) {
     "partly sunny",
     "intermittent clouds",
     "hazy sunshine",
-    "mostly cloudy",
     "hot",
   ];
 
-  let arrayCloudy = ["cloudy", "dreary (overcast)", "fog", "windy"];
+  let arrayCloudy = [
+    "cloudy",
+    "mostly cloudy",
+    "dreary (overcast)",
+    "fog",
+    "windy",
+  ];
 
   let arrayRain = [
     "showers",
@@ -303,8 +299,6 @@ function changeBackground(typeOfWeather) {
     "mostly cloudy w/ flurries",
     "mostly cloudy w/ snow",
   ];
-
-  console.log(arraySun.includes(typeOfWeather));
 
   if (arraySun.includes(typeOfWeather.toLowerCase())) {
     bodyhtml.style.background =
